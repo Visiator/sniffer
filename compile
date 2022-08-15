@@ -1,0 +1,3 @@
+#!/bin/sh
+
+g++ main.cpp tools.cpp analiz.cpp sessions.cpp pcap.cpp frame.cpp fragments_queue.cpp -o sniffer

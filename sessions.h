@@ -21,8 +21,32 @@
 #include "frame.h"
 #include "tools.h"
 
+class SESSION;
+
+void analiz_to_block(SESSION* session);
+
+class SESSION_FRAME {
+public:
+    DIRECTION direction;
+    unsigned int size, payload_size;
+    
+    void fill(FRAME *frame) {
+        direction = frame->direction;
+        size = frame->frame_size;
+        payload_size = frame->payload_size;
+    }
+    
+    void clean() {
+        size = 0;
+        payload_size = 0;
+        direction = undefined;
+    }
+    SESSION_FRAME() {};
+};
+
 class SESSION {
 public:
+    SESSION_FRAME frames[10];
     unsigned int size, payload_size, packet_count, packet_with_payload_count;
     unsigned char mac_src[6], mac_dst[6];
     unsigned char ip_proto; 
@@ -39,6 +63,9 @@ public:
     }
     
     void clean() {
+        for(int i=0;i<10;i++) {
+            frames[i].clean();
+        }
         for(int i=0;i<6;i++) {
                 mac_src[i] = 0;
                 mac_dst[i] = 0;
@@ -63,6 +90,9 @@ public:
             }
             dns = find_dns(direction == ingress ? ipv4_dst_port : ipv4_src_port);
         }
+        
+        if(packet_count < 10) frames[packet_count].fill(frame);;
+        
         ip_proto = frame->ip_proto;
         ipv4_src_ip = frame->ipv4_src_ip;
         ipv4_dst_ip = frame->ipv4_dst_ip;
@@ -77,6 +107,9 @@ public:
         if(frame->payload_size > 0) packet_with_payload_count++;
     
         frame->stored_to_session();
+        if(packet_count >= 4 && packet_count <= 10) {
+            analiz_to_block(this);
+        }
     }
     SESSION() {
         clean();

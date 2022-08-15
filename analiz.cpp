@@ -11,6 +11,8 @@
 extern FRAGMENTS_QUEUE queue;
 extern SESSIONS sessions;
 
+void analiz_to_block(SESSION* session);
+
 void analiz_TZSP(int frame_no, unsigned char *buf, int sz);
 
 void decode_tls_cert(unsigned char *item, int idx, int cert_len, CERT *cert, std::string path);
@@ -260,15 +262,21 @@ void analiz_ipv4_tcp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
 }
 
 
-void read_dns_name(int frame_no, unsigned char *buf, int buf_size, char *rr, int &i) {
+void read_dns_name(int lvl, int frame_no, unsigned char *buf, int buf_size, char *rr, int &i) {
     int jj=0;
     while(jj<1000-2 && rr[jj] != 0) jj++;
     
     int k;
-    if(i >= buf_size) { 
-        wtf("read_dns_name (1)", frame_no, buf, buf_size); 
+
+    if(lvl > 20) {
+        wtf("lvl > 20");
         return;
     }
+    
+    if(i >= buf_size) { 
+        wtf("read_dns_name i > buf_size"); 
+        return; 
+    };
     unsigned char cc = buf[i++];
     while(cc > 0) {
         
@@ -279,9 +287,11 @@ void read_dns_name(int frame_no, unsigned char *buf, int buf_size, char *rr, int
                 wtf("read_dns_name (2)", frame_no, buf, buf_size); 
                 return;
             }
+            if(i >= buf_size) { wtf("read_dns_name i > buf_size"); return; };
+            
             cc = buf[i++];
             k += cc;
-            read_dns_name(frame_no, buf, buf_size, rr, k);
+            read_dns_name(lvl+1, frame_no, buf, buf_size, rr, k);
             return;
         }
 
@@ -289,10 +299,12 @@ void read_dns_name(int frame_no, unsigned char *buf, int buf_size, char *rr, int
         if(jj > 0) rr[jj++] = '.';
         for(unsigned int j=0;j<cc;j++)
         {
-            if(i >= buf_size) { wtf("read_dns_name (3)", frame_no, buf, buf_size); return; };
+            
+            if(i >= buf_size) { wtf("read_dns_name i > buf_size"); return; };
             rr[jj++] = buf[i++]; 
         };
-        if(i >= buf_size) { wtf("read_dns_name (4)", frame_no, buf, buf_size); }
+        
+        if(i >= buf_size) { wtf("read_dns_name i > buf_size"); return; };
         cc = buf[i++];
     }
 }
@@ -309,6 +321,7 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
     unsigned int ip = 0, xx;
     
     if(buf_size == 148) {
+        if(i+3 >= buf_size) return;
         xx = get_i32(buf[i+0], buf[i+1], buf[i+2], buf[i+3]);
         if(xx == 0x00000001) { // Wireguard client -> server
             frame->set_wg_sender(buf+4);
@@ -318,6 +331,7 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
         }
     };
     if(buf_size == 92) {
+        if(i+3 >= buf_size) return;
         xx = get_i32(buf[i+0], buf[i+1], buf[i+2], buf[i+3]);
         if(xx == 0x00000002) { // Wireguard server -> client
             frame->is_wireguard_sc = true;
@@ -334,7 +348,7 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
     char rr[1000], dns_cname[1000];
     
     if(frame->ipv4_dst_port == 53 || frame->ipv4_src_port == 53) {
-        
+        if(i+4 >= buf_size) return;
         dns_id = get_i16(buf[i++], buf[i++]);
         dns_flags = get_i16(buf[i++], buf[i++]);
         if((dns_flags & 0x8000) == 0x8000) {
@@ -342,8 +356,10 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
         } else {
             frame->dns_request = 1;
         }
+        if(i+4 >= buf_size) return;
         dns_count_queries = get_i16(buf[i++], buf[i++]);
         dns_count_answers = get_i16(buf[i++], buf[i++]);
+        if(i+4 >= buf_size) return;
         dns_count_auth_rr = get_i16(buf[i++], buf[i++]);
         dns_count_add_rr = get_i16(buf[i++], buf[i++]);
         /*if(dns_count_queries == 1)// && dns_count_answers == 0 && dns_count_auth_rr == 0 && dns_count_add_rr == 0) {
@@ -358,12 +374,13 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
         while(dns_count_queries > 0)
         {
                 for(int i=0;i<1000;i++) rr[i] = 0;
-                read_dns_name(frame_no, buf, buf_size, rr, i);
+                read_dns_name(0, frame_no, buf, buf_size, rr, i);
                 frame->add_dns_request(rr);
                 if(i >= buf_size) {
                     wtf("i >= buf_size");
                     return;
                 }
+                if(i+4 >= buf_size) return;
                 dns_qry_type = get_i16(buf[i++], buf[i++]);
                 dns_qry_class = get_i16(buf[i++], buf[i++]);
                 frame->set_dns_request(rr, dns_qry_type, dns_qry_class);
@@ -372,9 +389,11 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
         while(dns_count_answers > 0)// && dns_count_answers == 0 && dns_count_auth_rr == 0 && dns_count_add_rr == 0) 
         {
                 for(int i=0;i<1000;i++) rr[i] = 0;
-                read_dns_name(frame_no, buf, buf_size, rr, i);
+                read_dns_name(0, frame_no, buf, buf_size, rr, i);
+                if(i+4 >= buf_size) return;
                 dns_qry_type = get_i16(buf[i++], buf[i++]);
                 dns_qry_class = get_i16(buf[i++], buf[i++]);
+                if(i+6 >= buf_size) return;
                 dns_resp_ttl = get_i32(buf[i++], buf[i++], buf[i++], buf[i++]);
                 dns_resp_len = get_i16(buf[i++], buf[i++]);
                 
@@ -383,6 +402,7 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
                 } else if(dns_qry_type == 5){
                     
                 } else if(dns_qry_type == 1){
+                    if(i+4 >= buf_size) return;
                     ip = get_i32(buf[i+3], buf[i+2], buf[i+1], buf[i+0]);
                     frame->dns_responce = true;
                     frame->add_dns_responce(rr, ip);
@@ -401,9 +421,11 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
         while(dns_count_auth_rr > 0)
         {
                 for(int i=0;i<1000;i++) rr[i] = 0;
-                read_dns_name(frame_no, buf, buf_size, rr, i);
+                read_dns_name(0, frame_no, buf, buf_size, rr, i);
+                if(i+4 >= buf_size) return;
                 dns_qry_type = get_i16(buf[i++], buf[i++]);
                 dns_qry_class = get_i16(buf[i++], buf[i++]);
+                if(i+6 >= buf_size) return;
                 dns_resp_ttl = get_i32(buf[i++], buf[i++], buf[i++], buf[i++]);
                 dns_resp_len = get_i16(buf[i++], buf[i++]);
                 
@@ -412,6 +434,7 @@ void analiz_ipv4_udp_payload(int frame_no, unsigned char *buf, int buf_size, FRA
                 } else if(dns_qry_type == 5) {
 
                 } else if(dns_qry_type == 1) {
+                    if(i+4 >= buf_size) return;
                     ip = get_i32(buf[i+3], buf[i+2], buf[i+1], buf[i+0]);
                     frame->add_dns_responce(rr, ip);
                     if(dns_resp_len != 4) {
@@ -639,6 +662,7 @@ void analiz_ipv4_tcp(int frame_no, unsigned char *buf, int buf_size, FRAME *fram
                 v = q->get_buf(d1+frame->payload_size);
                 analiz_ipv4_tcp_payload(frame_no, v, d1+frame->payload_size, frame);
                 frame->save_sess(frame_no, v, d1+frame->payload_size);
+                detect_ip(frame);
                 flg = 1;
                 
             } else {
@@ -651,7 +675,7 @@ void analiz_ipv4_tcp(int frame_no, unsigned char *buf, int buf_size, FRAME *fram
     }
     
     
-    detect_ip(frame);
+    //detect_ip(frame);
     
     //frame->payload = buf + i;
     //analiz_ipv4_tcp_payload(frame_no, buf + i, buf_size - i, frame);
@@ -672,6 +696,7 @@ void save_ip_flow(int frame_no, unsigned char ip_proto, unsigned int ip_src, uns
         fclose(f);
     }*/
 }
+
 
 void analiz_ipv4(int frame_no, unsigned char *buf, int buf_size, FRAME *frame) {
     int i = 0;
@@ -846,6 +871,8 @@ void analiz(int frame_no, unsigned char *buf, int buf_size) {
     
     sessions.add_to_session(&frame);   
     sessions.save();
+    
+
 }
 
 int get_ui8(unsigned char *item, int idx, unsigned char *v, int index) {
@@ -1592,4 +1619,94 @@ void analiz_r0(int frame_no, unsigned char *buf, int buf_size) {
     }
  
    
+}
+
+
+
+void need_block_ip(unsigned int ip, const char *info) {
+    FILE *f;
+    f = fopen("need_block_history.txt", "ab");
+    if(f != NULL) {
+        char cc[100];
+        ipv4_to_char(ip, cc);
+        fprintf(f, "%s, // %s\n", cc, info);
+        fclose(f);
+    }
+    
+    create_file("/var/www/html/sniffer_web/need_block", ip);    
+}
+
+void analiz_to_block_udp_4_xx_yy(SESSION* session, unsigned int v1, unsigned int v2) {
+    if(session->frames[0].payload_size == v1 &&
+           session->frames[1].payload_size == v2 &&
+           session->frames[2].payload_size == v1 &&
+           session->frames[3].payload_size == v2 
+           )
+        {
+            need_block_ip(session->ipv4_dst_ip, "UDP 12480");
+        };
+}
+
+void analiz_to_block(SESSION* session) {
+    
+    if(session->packet_count == 7) {
+        if(session->frames[0].size == 74 &&
+           session->frames[1].size == 74 &&
+           session->frames[2].size == 66 &&
+           session->frames[3].size == 140 &&
+           session->frames[4].size == 66 &&
+           session->frames[5].size >= 137 && session->frames[5].size <= 142 &&
+           session->frames[6].size == 66 
+          )
+        {
+            need_block_ip(session->ipv4_dst_ip, "TCP p1");
+        }
+                
+    }
+    
+    if(session->packet_count >= 4 &&
+       session->ipv4_dst_port == 12480
+      ) 
+    {
+        analiz_to_block_udp_4_xx_yy(session, 70, 55);
+        analiz_to_block_udp_4_xx_yy(session, 70, 56);
+        analiz_to_block_udp_4_xx_yy(session, 70, 57);
+        analiz_to_block_udp_4_xx_yy(session, 70, 58);
+        analiz_to_block_udp_4_xx_yy(session, 70, 59);
+        analiz_to_block_udp_4_xx_yy(session, 70, 60);
+        analiz_to_block_udp_4_xx_yy(session, 70, 61);
+        analiz_to_block_udp_4_xx_yy(session, 70, 62);
+        analiz_to_block_udp_4_xx_yy(session, 70, 63);
+        analiz_to_block_udp_4_xx_yy(session, 70, 64);
+        analiz_to_block_udp_4_xx_yy(session, 70, 65);
+        analiz_to_block_udp_4_xx_yy(session, 70, 66);
+        analiz_to_block_udp_4_xx_yy(session, 70, 67);
+        analiz_to_block_udp_4_xx_yy(session, 70, 68);
+        analiz_to_block_udp_4_xx_yy(session, 70, 69);
+        analiz_to_block_udp_4_xx_yy(session, 70, 70);
+        analiz_to_block_udp_4_xx_yy(session, 70, 71);
+        analiz_to_block_udp_4_xx_yy(session, 70, 72);
+        analiz_to_block_udp_4_xx_yy(session, 70, 73);
+        analiz_to_block_udp_4_xx_yy(session, 70, 74);
+        
+    }
+    
+    if(session->frames[0].payload_size == 0 &&
+       session->frames[1].payload_size == 0 &&
+       session->frames[2].payload_size == 0 &&
+       session->frames[3].payload_size == 59 &&
+       session->frames[4].payload_size == 0 &&
+       session->frames[5].payload_size == 65 &&
+       session->frames[6].payload_size == 0 &&
+       session->frames[7].payload_size == 39 &&
+       session->frames[8].payload_size == 45 &&
+       session->frames[9].payload_size == 39 
+      )
+    {
+
+        printf("DETECT!!!\n");
+        need_block_ip(session->ipv4_dst_ip, "TCP p1");
+    }
+            
+            
 }

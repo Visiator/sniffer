@@ -46,6 +46,7 @@ bool DirectoryExists( const char* pzPath );
 
 int to_integer( const char *v );
 void analiz_by_patterns(FRAME *frame);
+void create_file(const char *dir, unsigned int n);
 
 #endif /* TOOLS_H */
 

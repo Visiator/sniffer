@@ -4,12 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/analiz.h</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/fragments_queue.h</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/frame.h</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/pcap.h</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/sessions.h</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/tools.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/analiz.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/fragments_queue.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/frame.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/pcap.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/sessions.h</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/tools.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -18,13 +18,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/analiz.cpp</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/fragments_queue.cpp</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/frame.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/analiz.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/fragments_queue.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/frame.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/pcap.cpp</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/sessions.cpp</itemPath>
-      <itemPath>/home/smorodin/NetBeansProjects/sf3/tools.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/pcap.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/sessions.cpp</itemPath>
+      <itemPath>/home/smorodin/NetBeansProjects/sniffer/tools.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -52,62 +52,62 @@
           <commandLine>-pthread</commandLine>
         </ccTool>
       </compileType>
-      <item path="/home/smorodin/NetBeansProjects/sf3/analiz.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/analiz.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/analiz.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/analiz.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/fragments_queue.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/fragments_queue.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/fragments_queue.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/fragments_queue.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/frame.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/frame.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/frame.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/frame.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/pcap.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/pcap.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/pcap.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/pcap.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/sessions.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/sessions.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/sessions.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/sessions.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/tools.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/tools.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/tools.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/tools.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -136,62 +136,62 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="/home/smorodin/NetBeansProjects/sf3/analiz.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/analiz.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/analiz.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/analiz.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/fragments_queue.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/fragments_queue.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/fragments_queue.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/fragments_queue.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/frame.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/frame.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/frame.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/frame.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/pcap.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/pcap.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/pcap.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/pcap.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/sessions.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/sessions.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/sessions.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/sessions.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/tools.cpp"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/tools.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/smorodin/NetBeansProjects/sf3/tools.h"
+      <item path="/home/smorodin/NetBeansProjects/sniffer/tools.h"
             ex="false"
             tool="3"
             flavor2="0">

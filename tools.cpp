@@ -247,29 +247,41 @@ void rewrite_in_file_A(char *filename, unsigned char ip_proto, int frame_size) {
 
 void detect_ip(FRAME *frame) {
     unsigned char ip_proto_;
-    int ip_, port_, frame_size_;
+    int ip0_, port0_, ip1_, port1_, frame_size_;
     if(frame->direction == egress) {
-        ip_ = frame->ipv4_dst_ip;
-        port_ = frame->ipv4_dst_port;
+        ip1_ = frame->ipv4_dst_ip;
+        port1_ = frame->ipv4_dst_port;
+        
+        ip0_ = frame->ipv4_src_ip;
+        port0_ = frame->ipv4_src_port;
+        
     } else {
-        ip_ = frame->ipv4_src_ip;
-        port_ = frame->ipv4_src_port;
+        ip1_ = frame->ipv4_src_ip;
+        port1_ = frame->ipv4_src_port;
+        
+        ip0_ = frame->ipv4_dst_ip;
+        port0_ = frame->ipv4_dst_port;
     }
     frame_size_ = frame->payload_size;
     
-    if(ip_ == 0) return;
-    if(ip_ == 0xffffffff) return;
-    if((ip_ & 0xff000000) == 0xc0000000 &&
-       (ip_ & 0xff0000) == 0xa80000 )
+    if(ip1_ == 0) return;
+    if(ip1_ == 0xffffffff) return;
+    if((ip1_ & 0xff000000) == 0xc0000000 &&
+       (ip1_ & 0xff0000) == 0xa80000 )
     {
         
         return;
     }
+
+    if(ip1_ == 0x08080808 || ip0_ == 0x08080808) {
+        return;
+    }
     
-    char ss[500], ip[100];
-    ipv4_to_char(ip_, ip);
+    char ss[500], ip0__[100], ip1__[100];
+    ipv4_to_char(ip1_, ip1__);
+    ipv4_to_char(ip0_, ip0__);
     
-    sprintf(ss, "/var/www/html/ip3/%s:%d", ip, port_);
+    sprintf(ss, "/var/www/html/sniffer_web/ip3/%s:%d_%s:%d", ip1__, port1_, ip0__, port0_);
     
     char tcp_e[1000], udp_e[1000], sni[1000], cert[1000];
     char tcp_i[1000], udp_i[1000];
@@ -382,7 +394,7 @@ void detect_ip(FRAME *frame) {
     
     fclose(f);
     
-    analiz_by_patterns(frame);
+    //analiz_by_patterns(frame);
 }
 
 

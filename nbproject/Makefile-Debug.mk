@@ -35,12 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/caa124e8/analiz.o \
-	${OBJECTDIR}/_ext/caa124e8/fragments_queue.o \
-	${OBJECTDIR}/_ext/caa124e8/frame.o \
-	${OBJECTDIR}/_ext/caa124e8/pcap.o \
-	${OBJECTDIR}/_ext/caa124e8/sessions.o \
-	${OBJECTDIR}/_ext/caa124e8/tools.o \
+	${OBJECTDIR}/_ext/ab041483/analiz.o \
+	${OBJECTDIR}/_ext/ab041483/fragments_queue.o \
+	${OBJECTDIR}/_ext/ab041483/frame.o \
+	${OBJECTDIR}/_ext/ab041483/pcap.o \
+	${OBJECTDIR}/_ext/ab041483/sessions.o \
+	${OBJECTDIR}/_ext/ab041483/tools.o \
 	${OBJECTDIR}/main.o
 
 
@@ -68,35 +68,35 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sniffer: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sniffer ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/caa124e8/analiz.o: /home/smorodin/NetBeansProjects/sf3/analiz.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/analiz.o: /home/smorodin/NetBeansProjects/sniffer/analiz.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/analiz.o /home/smorodin/NetBeansProjects/sf3/analiz.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/analiz.o /home/smorodin/NetBeansProjects/sniffer/analiz.cpp
 
-${OBJECTDIR}/_ext/caa124e8/fragments_queue.o: /home/smorodin/NetBeansProjects/sf3/fragments_queue.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/fragments_queue.o: /home/smorodin/NetBeansProjects/sniffer/fragments_queue.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/fragments_queue.o /home/smorodin/NetBeansProjects/sf3/fragments_queue.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/fragments_queue.o /home/smorodin/NetBeansProjects/sniffer/fragments_queue.cpp
 
-${OBJECTDIR}/_ext/caa124e8/frame.o: /home/smorodin/NetBeansProjects/sf3/frame.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/frame.o: /home/smorodin/NetBeansProjects/sniffer/frame.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/frame.o /home/smorodin/NetBeansProjects/sf3/frame.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/frame.o /home/smorodin/NetBeansProjects/sniffer/frame.cpp
 
-${OBJECTDIR}/_ext/caa124e8/pcap.o: /home/smorodin/NetBeansProjects/sf3/pcap.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/pcap.o: /home/smorodin/NetBeansProjects/sniffer/pcap.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/pcap.o /home/smorodin/NetBeansProjects/sf3/pcap.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/pcap.o /home/smorodin/NetBeansProjects/sniffer/pcap.cpp
 
-${OBJECTDIR}/_ext/caa124e8/sessions.o: /home/smorodin/NetBeansProjects/sf3/sessions.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/sessions.o: /home/smorodin/NetBeansProjects/sniffer/sessions.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/sessions.o /home/smorodin/NetBeansProjects/sf3/sessions.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/sessions.o /home/smorodin/NetBeansProjects/sniffer/sessions.cpp
 
-${OBJECTDIR}/_ext/caa124e8/tools.o: /home/smorodin/NetBeansProjects/sf3/tools.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/caa124e8
+${OBJECTDIR}/_ext/ab041483/tools.o: /home/smorodin/NetBeansProjects/sniffer/tools.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/ab041483
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/caa124e8/tools.o /home/smorodin/NetBeansProjects/sf3/tools.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/ab041483/tools.o /home/smorodin/NetBeansProjects/sniffer/tools.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

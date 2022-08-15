@@ -112,7 +112,7 @@ std::string FRAME::generate_id_from_FRAME_ipv4(FRAME *frame) {
     char c0[100], c1[100], c2[100], ss[1000];
     std::string x;
     
-    if(frame->direction == ingress) {
+    if(frame->direction == egress) {
         
         sprintf(ss, "%s %s:%d - %s:%d", decode_ip_proto(frame->ip_proto, c0), ipv4_to_char(frame->ipv4_dst_ip, c1), frame->ipv4_dst_port, ipv4_to_char(frame->ipv4_src_ip, c2), frame->ipv4_src_port);
         x += std::string(ss);
@@ -192,15 +192,15 @@ unsigned int vv4(unsigned int v) {
 
 void FRAME::save_pcap(int frame_no_, unsigned char *buf_, int buf_size_) {
     char fn[1000];
-    sprintf(fn, "/var/www/html/sess/%s", this->session_id.c_str());
+    sprintf(fn, "/var/www/html/sniffer_web/sess/%s", this->session_id.c_str());
     
-    bool r = DirectoryExists(fn);
+    //bool r = DirectoryExists(fn);
     if(!DirectoryExists(fn)) {
         mkdir(fn, 0777);
         chmod(fn, 0777);
     }
     
-    sprintf(fn, "/var/www/html/sess/%s/_sess.pcap", this->session_id.c_str());
+    sprintf(fn, "/var/www/html/sniffer_web/sess/%s/_sess.pcap", this->session_id.c_str());
     FILE *f;
     f = fopen(fn, "rb");
     if(f == NULL) {
@@ -240,7 +240,7 @@ void FRAME::save_pcap(int frame_no_, unsigned char *buf_, int buf_size_) {
 void FRAME::save_sess(int frame_no_, unsigned char *buf_, int buf_size_) {
     sess_is_saved = true;
     
-    char dir[] = {"/var/www/html/sess"};
+    char dir[] = {"/var/www/html/sniffer_web/sess"};
     
     bool r = DirectoryExists(dir);
     if(!DirectoryExists(dir)) {

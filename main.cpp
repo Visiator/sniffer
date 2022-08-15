@@ -27,6 +27,8 @@
 #include <unistd.h>
 
 #include <sys/types.h>
+#include <sys/stat.h>
+
 #include <ifaddrs.h>  
 
 #include <string.h>
@@ -239,7 +241,11 @@ int main(int argc, char** argv) {
     if(argc >= 2) param1 = std::string(argv[1]);
     if(argc >= 3) param2 = std::string(argv[1]);
     
-    
+    char fn[] = {"/var/www/html/sniffer_web/need_block"};
+    if(!DirectoryExists(fn)) {
+        mkdir(fn, 0777);
+        chmod(fn, 0777);
+    }
     
     
     if(param1 != "" && param2 == "") {
