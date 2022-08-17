@@ -631,11 +631,11 @@ void analiz_ipv4_tcp(int frame_no, unsigned char *buf, int buf_size, FRAME *fram
     // net option 12 byte
     
     FILE *f;
-    f = fopen("seq_ack.txt", "ab");
+    /*f = fopen("seq_ack.txt", "ab");
     if(f != NULL) {
         fprintf(f, "%s\n", s);
         fclose(f);
-    }
+    }*/
     
     unsigned int d1, d2;
     bool bb;

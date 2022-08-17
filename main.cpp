@@ -231,9 +231,29 @@ FILE *f;
     
 }
 
+/*void f_to_hex() {
+    FILE *f;
+    f = fopen("tmpl.pcapng", "rb");
+    if(f != NULL) {
+        int j = 0, i = fgetc(f);
+        while(i != EOF) {
+            printf("0x%02x, ", i);
+            j++;
+            if(j >= 20) {
+                printf("\n");
+                j = 0;
+            }
+            i = fgetc(f);
+        }
+        fclose(f);
+    }
+    printf("\n");
+}*/
 
 int main(int argc, char** argv) {
 
+
+    
     unsigned int mport = 37008;
     
     std::string param1, param2;
@@ -246,6 +266,7 @@ int main(int argc, char** argv) {
         mkdir(fn, 0777);
         chmod(fn, 0777);
     }
+    
     
     
     if(param1 != "" && param2 == "") {
@@ -261,6 +282,7 @@ int main(int argc, char** argv) {
         if(file_exists(param1)) {
             printf("load from picap...\n");
             load_from_picap(param1);
+            
             return 0;
         }
     }
