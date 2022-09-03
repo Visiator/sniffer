@@ -1623,17 +1623,20 @@ void analiz_r0(int frame_no, unsigned char *buf, int buf_size) {
 
 
 
-void need_block_ip(unsigned int ip, const char *info) {
+void need_block_ip(SESSION* session, const char *info) {
+    
+    session->is_need_block_complete = true;
+    
     FILE *f;
     f = fopen("need_block_history.txt", "ab");
     if(f != NULL) {
         char cc[100];
-        ipv4_to_char(ip, cc);
+        ipv4_to_char(session->ipv4_dst_ip, cc);
         fprintf(f, "%s, // %s\n", cc, info);
         fclose(f);
     }
     
-    create_file("/var/www/html/sniffer_web/need_block", ip);    
+    create_file("/var/www/html/sniffer_web/need_block", session->ipv4_dst_ip);    
 }
 
 void analiz_to_block_udp_4_xx_yy(SESSION* session, unsigned int v1, unsigned int v2) {
@@ -1643,11 +1646,83 @@ void analiz_to_block_udp_4_xx_yy(SESSION* session, unsigned int v1, unsigned int
            session->frames[3].payload_size == v2 
            )
         {
-            need_block_ip(session->ipv4_dst_ip, "UDP 12480");
+            need_block_ip(session, "UDP 12480");
         };
 }
 
 void analiz_to_block(SESSION* session) {
+
+    if((session->ipv4_dst_ip & 0xff000000) == 0xc0000000 &&
+       (session->ipv4_dst_ip & 0x00ff0000) == 0x00a80000
+      )  
+    {
+        printf("192\n");
+        return;
+    }
+    if(session->payload_size > 100000) {
+        
+        return;
+    }
+    if(session->packet_count == 7) {
+        //     1
+        if(session->frames[0].size >= 74 && session->frames[0].size <= 78 &&
+           session->frames[1].size == 74 &&
+           session->frames[2].size == 66 &&
+           (
+             (session->frames[3].size >= 125 && session->frames[3].size <= 144)     
+                || session->frames[3].size == 217 
+                || session->frames[3].size == 223
+                || session->frames[3].size == 250
+                || session->frames[3].size == 293 
+           ) &&
+           session->frames[4].size == 66 &&
+           (
+                (session->frames[5].size >= 111 && session->frames[5].size <= 144) 
+                || session->frames[5].size == 329
+           ) &&
+           session->frames[6].size == 66 
+          )
+        {
+            need_block_ip(session, "TCP p11");
+        }
+        //       2
+        if(session->frames[0].size >= 74 && session->frames[0].size <= 78 &&
+           session->frames[1].size == 74 &&
+           session->frames[2].size == 66 &&
+ 
+           (
+             (session->frames[3].size >= 125 && session->frames[3].size <= 144)     
+                || session->frames[3].size == 217 
+                || session->frames[3].size == 223 
+           ) &&
+           session->frames[4].size == 66 &&
+           session->frames[5].size == 66 &&
+           session->frames[6].size >= 111 && session->frames[6].size <= 144 
+           //session->frames[7].size == 66 
+          )
+        {
+            need_block_ip(session, "TCP p11");
+        } 
+        
+        if(session->frames[0].size >= 74 && session->frames[0].size <= 78 &&
+           session->frames[1].size == 74 &&
+           session->frames[2].size == 66 &&
+ 
+           (
+             session->frames[3].size == 115
+               
+           ) &&
+           session->frames[4].size == 160 &&
+           session->frames[5].size == 66 &&
+           session->frames[6].size == 66 
+          )
+        {
+            need_block_ip(session, "TCP p113");
+        } 
+        
+        
+        
+    }
     
     if(session->packet_count == 7) {
         if(session->frames[0].size == 74 &&
@@ -1659,7 +1734,7 @@ void analiz_to_block(SESSION* session) {
            session->frames[6].size == 66 
           )
         {
-            need_block_ip(session->ipv4_dst_ip, "TCP p1");
+            need_block_ip(session, "TCP p1");
         }
                 
     }
@@ -1705,7 +1780,7 @@ void analiz_to_block(SESSION* session) {
     {
 
         printf("DETECT!!!\n");
-        need_block_ip(session->ipv4_dst_ip, "TCP p1");
+        need_block_ip(session, "TCP p1");
     }
             
             

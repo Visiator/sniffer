@@ -26,18 +26,18 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" 17</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" /home/smorodin/a.pcapng</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" /usr/a.pcapng</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" /usr/_sess.pcapng</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 21</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" /home/smorodin/NetBeansProjects/sniffer/33.pcapng</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" /home/smorodin/Downloads/3_x-vpn_Apple_Protokol_B.pcapng</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 3</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" /home/smorodin/sniffer.pcap</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 13</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" 3</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" /home/smorodin/Downloads/3_x-vpn_Apple_Protokol_B.pcapng</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 14</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 4</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" /home/smorodin/Downloads/3_x-vpn_Apple_Protokol_B.pcapng</runcommand>
+        <runcommand>"${OUTPUT_PATH}" 4</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

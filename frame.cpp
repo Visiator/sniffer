@@ -61,8 +61,8 @@ void FRAME::add_dns_responce(char *name, unsigned int ip) {
 }
 
 void FRAME::detect_direction() {
-    if( ((ipv4_src_ip & 0xff000000) == 0xc0000000) &&
-            ((ipv4_src_ip & 0xff0000) == 0xa80000) 
+    if( ((ipv4_src_ip & 0xff000000) ==   0xc0000000) &&
+            ((ipv4_src_ip & 0xff0000) == 0x00a80000) 
       ) 
     {
         direction = egress;

@@ -184,11 +184,12 @@ void start_sniff(int eth_idx) {
 
     
     struct ifreq req;
-    strcpy(req.ifr_name, "enx00e04c3601ad");
+    strcpy(req.ifr_name, "enxf8e43bc4008f");
     ioctl (eth0_if, SIOCGIFMTU, &req);
     int mtu = req.ifr_mtu;
 
-
+    mtu = 1500;
+    
     printf("mtu = %d\n", mtu);
 
 FILE *f;

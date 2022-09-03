@@ -55,6 +55,7 @@ public:
     DIRECTION direction; // ingress, egress
     bool dhcp_request, dhcp_responce;
     bool dns_request, dns_responce;
+    bool is_need_block_complete, is_need_block_show;
     
     std::string dns;
     
@@ -70,6 +71,8 @@ public:
                 mac_src[i] = 0;
                 mac_dst[i] = 0;
             }
+        is_need_block_complete = false;
+        is_need_block_show = false;
         ip_proto = 0;
         ipv4_src_ip = 0; ipv4_dst_ip = 0;
         ipv4_src_port = 0; ipv4_dst_port = 0;
@@ -109,6 +112,15 @@ public:
         frame->stored_to_session();
         if(packet_count >= 4 && packet_count <= 10) {
             analiz_to_block(this);
+        }
+        if(payload_size > 100000) {
+            if(frames[2].size == 66) {
+                 if(is_need_block_show == false) {
+                    is_need_block_show = true;
+                    printf(">100000 [%d %d %d   %d %d   %d %d]\n", frames[0].size, frames[1].size, frames[2].size, frames[3].size, frames[4].size, frames[5].size, frames[6].size);
+                };
+            };
+            return;
         }
     }
     SESSION() {
